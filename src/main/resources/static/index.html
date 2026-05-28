@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Veterinaria App</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<header class="topbar">
+		<div>
+			<p class="eyebrow">Laboratorio de Software</p>
+			<h1>Veterinaria App</h1>
+		</div>
+		<div class="status">
+			<span>API REST</span>
+			<strong>Spring Boot + H2</strong>
+		</div>
+	</header>
+
+	<main class="layout">
+		<section class="panel">
+			<div class="section-heading">
+				<h2>Duenios</h2>
+				<span id="total-duenios">0</span>
+			</div>
+			<form id="duenio-form" class="form-grid">
+				<input type="hidden" name="id">
+				<label>Nombre<input name="nombre" required></label>
+				<label>DNI<input name="dni"></label>
+				<label>Telefono<input name="telefono"></label>
+				<label>Email<input name="email" type="email"></label>
+				<label class="wide">Direccion<input name="direccion"></label>
+				<div class="actions">
+					<button type="submit">Guardar</button>
+					<button type="button" data-reset="duenio-form">Limpiar</button>
+				</div>
+			</form>
+			<div class="table-wrap">
+				<table>
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>DNI</th>
+							<th>Telefono</th>
+							<th>Acciones</th>
+						</tr>
+					</thead>
+					<tbody id="duenios-tabla"></tbody>
+				</table>
+			</div>
+		</section>
+
+		<section class="panel">
+			<div class="section-heading">
+				<h2>Mascotas</h2>
+				<span id="total-mascotas">0</span>
+			</div>
+			<form id="mascota-form" class="form-grid">
+				<input type="hidden" name="id">
+				<label>Nombre<input name="nombre" required></label>
+				<label>Fecha nacimiento<input name="fechaNacimiento" type="date"></label>
+				<label>Especie
+					<select name="especie">
+						<option>PERRO</option>
+						<option>GATO</option>
+						<option>AVE</option>
+						<option>CONEJO</option>
+						<option>OTRA</option>
+					</select>
+				</label>
+				<label>Raza<input name="raza"></label>
+				<label>Peso kg<input name="peso" type="number" min="0" step="0.1" value="0"></label>
+				<label>Duenio<select name="duenioId" id="mascota-duenio" required></select></label>
+				<div class="actions">
+					<button type="submit">Guardar</button>
+					<button type="button" data-reset="mascota-form">Limpiar</button>
+				</div>
+			</form>
+			<div class="table-wrap">
+				<table>
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>Especie</th>
+							<th>Duenio</th>
+							<th>Acciones</th>
+						</tr>
+					</thead>
+					<tbody id="mascotas-tabla"></tbody>
+				</table>
+			</div>
+		</section>
+
+		<section class="panel wide-panel">
+			<div class="section-heading">
+				<h2>Turnos</h2>
+				<span id="total-turnos">0</span>
+			</div>
+			<form id="turno-form" class="form-grid turnos-grid">
+				<input type="hidden" name="id">
+				<label>Fecha y hora<input name="fechaHora" type="datetime-local" required></label>
+				<label>Motivo
+					<select name="motivo">
+						<option>CONTROL</option>
+						<option>VACUNACION</option>
+						<option>URGENCIA</option>
+						<option>PELUQUERIA</option>
+					</select>
+				</label>
+				<label>Estado
+					<select name="estado">
+						<option>PENDIENTE</option>
+						<option>CONFIRMADO</option>
+						<option>FINALIZADO</option>
+						<option>CANCELADO</option>
+					</select>
+				</label>
+				<label>Mascota<select name="mascotaId" id="turno-mascota" required></select></label>
+				<label class="wide">Observacion<input name="observacion"></label>
+				<div class="actions">
+					<button type="submit">Guardar</button>
+					<button type="button" data-reset="turno-form">Limpiar</button>
+				</div>
+			</form>
+			<div class="table-wrap">
+				<table>
+					<thead>
+						<tr>
+							<th>Fecha</th>
+							<th>Mascota</th>
+							<th>Motivo</th>
+							<th>Estado</th>
+							<th>Costo</th>
+							<th>Acciones</th>
+						</tr>
+					</thead>
+					<tbody id="turnos-tabla"></tbody>
+				</table>
+			</div>
+		</section>
+	</main>
+
+	<script src="app.js"></script>
+</body>
+</html>
