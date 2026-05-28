@@ -4,7 +4,7 @@ Sistema de gestion de clinica veterinaria desarrollado como proyecto integrador
 para Laboratorio de Software.
 
 La aplicacion expone una API REST con Spring Boot y tambien incluye una interfaz
-web simple en HTML, CSS y JavaScript para realizar CRUD de duenios, mascotas y
+web simple en HTML, CSS y JavaScript para realizar CRUD de dueños, mascotas y
 turnos.
 
 ## Autor
@@ -24,8 +24,8 @@ Eduardo Maximiliano Gonzalez
 
 ## Funcionalidades
 
-- CRUD de duenios.
-- CRUD de mascotas asociadas a un duenio.
+- CRUD de dueños.
+- CRUD de mascotas asociadas a un dueño.
 - CRUD de turnos asociados a una mascota.
 - Calculo automatico del costo estimado de un turno.
 - Carga inicial de datos de ejemplo.
