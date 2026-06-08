@@ -10,6 +10,17 @@ import ar.edu.unpaz.veterinaria.model.Duenio;
 
 /**
  * Repositorio JPA para acceder a los duenios persistidos.
+ *
+ * JpaRepository<Duenio, Long> indica que este repositorio administra entidades
+ * Duenio y que el id de la entidad es de tipo Long.
+ *
+ * Al extender JpaRepository, Spring Data JPA da metodos listos como:
+ * findAll(), findById(), save() y deleteById().
+ *
+ * En este repositorio se muestran consultas derivadas y una consulta JPQL:
+ * - findByDni(...): consulta derivada que busca por el atributo dni.
+ * - findByNombreContainingIgnoreCase(...): consulta derivada que busca por nombre sin importar mayusculas/minusculas.
+ * - buscarConTelefonoCargado(): consulta JPQL, porque consulta la entidad Duenio y sus atributos.
  */
 public interface DuenioRepository extends JpaRepository<Duenio, Long> {
 
