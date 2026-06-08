@@ -148,5 +148,4 @@ El sistema cumple la primera version solicitada para la practica:
 - CRUD implementado con JpaRepository.
 - Frontend simple que consume la API REST.
 - Aplicacion de conceptos de POO y patrones de diseno.
-
-El DER y la documentacion tecnica breve quedan como siguientes entregables.
+- Diagrama de clases, DER y documentacion tecnica breve disponibles en `docs/`.
