@@ -3,8 +3,6 @@ package ar.edu.unpaz.veterinaria.model;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToOne;
 
 /**
@@ -16,9 +14,7 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Mascota extends PacienteVeterinario {
 
-	@Enumerated(EnumType.STRING)
-	private Especie especie;
-
+	private String especie;
 	private String raza;
 	private double peso;
 
@@ -28,7 +24,7 @@ public class Mascota extends PacienteVeterinario {
 	protected Mascota() {
 	}
 
-	public Mascota(String nombre, LocalDate fechaNacimiento, Especie especie, String raza, double peso, Duenio duenio) {
+	public Mascota(String nombre, LocalDate fechaNacimiento, String especie, String raza, double peso, Duenio duenio) {
 		super(nombre, fechaNacimiento);
 		this.especie = especie;
 		this.raza = raza;
@@ -36,11 +32,11 @@ public class Mascota extends PacienteVeterinario {
 		this.duenio = duenio;
 	}
 
-	public Especie getEspecie() {
+	public String getEspecie() {
 		return especie;
 	}
 
-	public void setEspecie(Especie especie) {
+	public void setEspecie(String especie) {
 		this.especie = especie;
 	}
 

@@ -3,8 +3,9 @@ package ar.edu.unpaz.veterinaria.model;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 /**
@@ -14,16 +15,15 @@ import jakarta.persistence.ManyToOne;
  * costo se calcula en la capa de servicio mediante una estrategia configurable.
  */
 @Entity
-public class Turno extends BaseEntity {
+public class Turno {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	private LocalDateTime fechaHora;
-
-	@Enumerated(EnumType.STRING)
-	private MotivoConsulta motivo;
-
-	@Enumerated(EnumType.STRING)
-	private EstadoTurno estado = EstadoTurno.PENDIENTE;
-
+	private String motivo;
+	private String estado = "PENDIENTE";
 	@ManyToOne
 	private Mascota mascota;
 
@@ -33,11 +33,15 @@ public class Turno extends BaseEntity {
 	protected Turno() {
 	}
 
-	public Turno(LocalDateTime fechaHora, MotivoConsulta motivo, Mascota mascota, String observacion) {
+	public Turno(LocalDateTime fechaHora, String motivo, Mascota mascota, String observacion) {
 		this.fechaHora = fechaHora;
 		this.motivo = motivo;
 		this.mascota = mascota;
 		this.observacion = observacion;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public LocalDateTime getFechaHora() {
@@ -48,19 +52,19 @@ public class Turno extends BaseEntity {
 		this.fechaHora = fechaHora;
 	}
 
-	public MotivoConsulta getMotivo() {
+	public String getMotivo() {
 		return motivo;
 	}
 
-	public void setMotivo(MotivoConsulta motivo) {
+	public void setMotivo(String motivo) {
 		this.motivo = motivo;
 	}
 
-	public EstadoTurno getEstado() {
+	public String getEstado() {
 		return estado;
 	}
 
-	public void setEstado(EstadoTurno estado) {
+	public void setEstado(String estado) {
 		this.estado = estado;
 	}
 
@@ -92,13 +96,13 @@ public class Turno extends BaseEntity {
 	 * Cambia el estado del turno a confirmado.
 	 */
 	public void confirmar() {
-		this.estado = EstadoTurno.CONFIRMADO;
+		this.estado = "CONFIRMADO";
 	}
 
 	/**
 	 * Cancela el turno cuando ya no sera atendido.
 	 */
 	public void cancelar() {
-		this.estado = EstadoTurno.CANCELADO;
+		this.estado = "CANCELADO";
 	}
 }

@@ -1,9 +1,11 @@
+// Rutas REST expuestas por los controllers de Spring Boot.
 const endpoints = {
-	duenios: "/duenios",
-	mascotas: "/mascotas",
-	turnos: "/turnos"
+	duenios: "/api/duenios",
+	mascotas: "/api/mascotas",
+	turnos: "/api/turnos"
 };
 
+// Estado local del frontend: guarda la ultima informacion recibida desde la API.
 const state = {
 	duenios: [],
 	mascotas: [],
@@ -15,7 +17,14 @@ const currency = new Intl.NumberFormat("es-AR", {
 	currency: "ARS"
 });
 
+/**
+ * Hace una solicitud HTTP al backend y devuelve la respuesta como JSON.
+ *
+ * Si no se pasan opciones, fetch usa GET por defecto.
+ * Si se pasan opciones, se puede indicar POST, PUT o DELETE.
+ */
 async function fetchJson(url, options) {
+	// fetch() usa GET por defecto si no le indicás otro método.
 	const response = await fetch(url, options);
 
 	if (!response.ok) {
@@ -29,20 +38,26 @@ async function fetchJson(url, options) {
 	return response.json();
 }
 
+// Muestra una fila de texto cuando una tabla no tiene registros.
 function renderEmpty(tbody, columns, message) {
 	tbody.innerHTML = `<tr><td class="empty" colspan="${columns}">${message}</td></tr>`;
 }
 
+// Limpia un formulario y borra el id oculto para volver al modo "crear".
 function resetForm(formId) {
 	const form = document.getElementById(formId);
 	form.reset();
 	form.elements.id.value = "";
 }
 
+// Crea las opciones HTML de un select usando una lista recibida desde el backend.
 function optionList(items, getLabel) {
 	return items.map(item => `<option value="${item.id}">${getLabel(item)}</option>`).join("");
 }
 
+/**
+ * Renderiza la tabla de duenios y actualiza el select de duenios usado por mascotas.
+ */
 function renderDuenios() {
 	const tbody = document.getElementById("duenios-tabla");
 	document.getElementById("total-duenios").textContent = state.duenios.length;
@@ -50,7 +65,7 @@ function renderDuenios() {
 	document.getElementById("mascota-duenio").innerHTML = optionList(state.duenios, duenio => duenio.nombre);
 
 	if (state.duenios.length === 0) {
-		renderEmpty(tbody, 4, "No hay duenios cargados.");
+		renderEmpty(tbody, 4, "No hay dueños cargados.");
 		return;
 	}
 
@@ -67,6 +82,9 @@ function renderDuenios() {
 	`).join("");
 }
 
+/**
+ * Renderiza la tabla de mascotas y actualiza el select de mascotas usado por turnos.
+ */
 function renderMascotas() {
 	const tbody = document.getElementById("mascotas-tabla");
 	document.getElementById("total-mascotas").textContent = state.mascotas.length;
@@ -82,7 +100,7 @@ function renderMascotas() {
 		<tr>
 			<td>${mascota.nombre}</td>
 			<td><span class="tag">${mascota.especie}</span></td>
-			<td>${mascota.duenio?.nombre ?? "Sin duenio"}</td>
+			<td>${mascota.duenio?.nombre ?? "Sin dueño"}</td>
 			<td class="row-actions">
 				<button data-action="edit" data-type="mascota" data-id="${mascota.id}">Editar</button>
 				<button data-action="delete" data-type="mascota" data-id="${mascota.id}">Borrar</button>
@@ -91,6 +109,9 @@ function renderMascotas() {
 	`).join("");
 }
 
+/**
+ * Renderiza la tabla de turnos con los datos que devuelve /api/turnos.
+ */
 function renderTurnos() {
 	const tbody = document.getElementById("turnos-tabla");
 	document.getElementById("total-turnos").textContent = state.turnos.length;
@@ -115,6 +136,7 @@ function renderTurnos() {
 	`).join("");
 }
 
+// Adapta la fecha ISO que devuelve Spring para mostrarla mas legible en la tabla.
 function formatDateTime(value) {
 	if (!value) {
 		return "";
@@ -122,6 +144,16 @@ function formatDateTime(value) {
 	return value.replace("T", " ").slice(0, 16);
 }
 
+/**
+ * Carga los datos principales de la pantalla.
+ *
+ * Hace tres GET en paralelo:
+ * - GET /api/duenios
+ * - GET /api/mascotas
+ * - GET /api/turnos
+ *
+ * Luego guarda las respuestas en state y vuelve a dibujar tablas y selects.
+ */
 async function cargarDatos() {
 	const [duenios, mascotas, turnos] = await Promise.all([
 		fetchJson(endpoints.duenios),
@@ -138,6 +170,7 @@ async function cargarDatos() {
 	renderTurnos();
 }
 
+// Copia los datos de un duenio seleccionado al formulario para editarlo.
 function fillDuenioForm(duenio) {
 	const form = document.getElementById("duenio-form");
 	form.elements.id.value = duenio.id;
@@ -148,6 +181,7 @@ function fillDuenioForm(duenio) {
 	form.elements.direccion.value = duenio.direccion ?? "";
 }
 
+// Copia los datos de una mascota seleccionada al formulario para editarla.
 function fillMascotaForm(mascota) {
 	const form = document.getElementById("mascota-form");
 	form.elements.id.value = mascota.id;
@@ -159,6 +193,7 @@ function fillMascotaForm(mascota) {
 	form.elements.duenioId.value = mascota.duenio?.id ?? "";
 }
 
+// Copia los datos de un turno seleccionado al formulario para editarlo.
 function fillTurnoForm(turno) {
 	const form = document.getElementById("turno-form");
 	form.elements.id.value = turno.id;
@@ -169,6 +204,7 @@ function fillTurnoForm(turno) {
 	form.elements.observacion.value = turno.observacion ?? "";
 }
 
+// Alta o modificacion de duenios. Si hay id usa PUT; si no hay id usa POST.
 document.getElementById("duenio-form").addEventListener("submit", async event => {
 	event.preventDefault();
 	const form = event.currentTarget;
@@ -191,6 +227,7 @@ document.getElementById("duenio-form").addEventListener("submit", async event =>
 	await cargarDatos();
 });
 
+// Alta o modificacion de mascotas. Envia duenioId porque el backend debe asociar la mascota a un duenio real.
 document.getElementById("mascota-form").addEventListener("submit", async event => {
 	event.preventDefault();
 	const form = event.currentTarget;
@@ -214,6 +251,7 @@ document.getElementById("mascota-form").addEventListener("submit", async event =
 	await cargarDatos();
 });
 
+// Alta o modificacion de turnos. Envia mascotaId y el backend calcula el costo segun el motivo.
 document.getElementById("turno-form").addEventListener("submit", async event => {
 	event.preventDefault();
 	const form = event.currentTarget;
@@ -236,6 +274,7 @@ document.getElementById("turno-form").addEventListener("submit", async event => 
 	await cargarDatos();
 });
 
+// Maneja los botones de limpiar, editar y borrar desde un unico listener.
 document.body.addEventListener("click", async event => {
 	const button = event.target.closest("button");
 
@@ -267,6 +306,7 @@ document.body.addEventListener("click", async event => {
 	}
 });
 
+// Primera carga de la pantalla: al cargarse app.js, se consulta la API y se dibuja la vista.
 cargarDatos().catch(error => {
 	console.error(error);
 	alert(error.message);

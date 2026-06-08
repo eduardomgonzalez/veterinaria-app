@@ -1,5 +1,8 @@
 package ar.edu.unpaz.veterinaria.model;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
 /**
@@ -9,7 +12,11 @@ import jakarta.persistence.MappedSuperclass;
  * persona y reutiliza estos atributos.
  */
 @MappedSuperclass
-public abstract class Persona extends BaseEntity {
+public abstract class Persona {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	private String nombre;
 	private String telefono;
@@ -22,6 +29,10 @@ public abstract class Persona extends BaseEntity {
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.email = email;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public String getNombre() {

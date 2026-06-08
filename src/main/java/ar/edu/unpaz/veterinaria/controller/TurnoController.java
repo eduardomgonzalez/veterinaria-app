@@ -2,7 +2,9 @@ package ar.edu.unpaz.veterinaria.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import ar.edu.unpaz.veterinaria.model.EstadoTurno;
 import ar.edu.unpaz.veterinaria.model.Mascota;
-import ar.edu.unpaz.veterinaria.model.MotivoConsulta;
 import ar.edu.unpaz.veterinaria.model.Turno;
 import ar.edu.unpaz.veterinaria.service.MascotaService;
 import ar.edu.unpaz.veterinaria.service.TurnoService;
@@ -25,19 +25,21 @@ import ar.edu.unpaz.veterinaria.service.TurnoService;
  * Controlador REST para administrar turnos de atencion.
  */
 @RestController
-@RequestMapping("/turnos")
+@RequestMapping("/api")
 public class TurnoController {
 
+	// Variables que son las conexiones del controller con los services.
 	private final TurnoService turnoService;
 	private final MascotaService mascotaService;
 
+	// Spring automáticamente crea los services y se los pasa al controller. (Inyección de dependencias)
 	public TurnoController(TurnoService turnoService, MascotaService mascotaService) {
 		this.turnoService = turnoService;
 		this.mascotaService = mascotaService;
 	}
 
-	@GetMapping
-	public List<Turno> listar(@RequestParam(required = false) EstadoTurno estado,
+	@GetMapping("/turnos")
+	public List<Turno> listar(@RequestParam(required = false) String estado,
 			@RequestParam(defaultValue = "false") boolean proximos) {
 		if (estado != null) {
 			return turnoService.buscarPorEstado(estado);
@@ -48,36 +50,90 @@ public class TurnoController {
 		return turnoService.listar();
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/turnos/{id}")
 	public ResponseEntity<Turno> buscar(@PathVariable Long id) {
-		return turnoService.buscarPorId(id)
-				.map(ResponseEntity::ok)
-				.orElse(ResponseEntity.notFound().build());
+		Optional<Turno> turnoBuscado = turnoService.buscarPorId(id);
+
+		if (turnoBuscado.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+
+		return ResponseEntity.ok(turnoBuscado.get());
 	}
 
-	@PostMapping
+	/**
+	 * Recibe el JSON enviado desde el formulario de turnos.
+	 *
+	 * Spring convierte ese JSON en un {@link TurnoRequest}. Luego el controller
+	 * busca la mascota usando el mascotaId recibido, crea el objeto {@link Turno}
+	 * y delega el guardado al service.
+	 */
+	@PostMapping("/turnos")
 	public ResponseEntity<Turno> crear(@RequestBody TurnoRequest request) {
-		return mascotaService.buscarPorId(request.mascotaId())
-				.map(mascota -> ResponseEntity.ok(turnoService.guardar(crearTurno(request, mascota))))
-				.orElse(ResponseEntity.badRequest().build());
+
+		// Busca la mascota. (Ejemplo: mascotaId = 1)
+		// Devuelve Optional<Mascota>. Puede haber una mascota o puede no haber nada.
+		Optional<Mascota> mascotaBuscada = mascotaService.buscarPorId(request.mascotaId());
+
+		// Si no existe devuelve HTTP 400 Bad Request
+		// 400 Bad Request
+		// sin body
+		if (mascotaBuscada.isEmpty()) {
+			return ResponseEntity.badRequest().build();
+		}
+
+		// Si existe
+		// Obtiene la mascota		
+		Mascota mascota = mascotaBuscada.get();
+
+		// Crea el objeto Turno
+		Turno turno = crearTurno(request, mascota);
+
+		/*
+		* Llama al service para guardar el turno.
+		*
+		* Acá usamos la instancia de TurnoService que Spring inyectó
+		* mediante el constructor del controller.
+		*
+		* El service devuelve el objeto Turno que fue guardado.
+		*
+		*/
+		Turno turnoGuardado = turnoService.guardar(turno);
+
+		/*
+		* Devuelve HTTP 201 Created porque se creó un turno nuevo.
+		* El objeto turnoGuardado se envia en el body de la respuesta.
+		  Sería algo así:
+		  	Status: 201 Created
+		  	Body: turnoGuardado
+		*
+ 		* Como este controller usa @RestController, Spring convierte automáticamente
+ 		* ese objeto Java a JSON antes de enviarlo al frontend.
+		*/
+		return ResponseEntity.status(HttpStatus.CREATED).body(turnoGuardado);
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("/turnos/{id}")
 	public ResponseEntity<Turno> actualizar(@PathVariable Long id, @RequestBody TurnoRequest request) {
-		return turnoService.buscarPorId(id)
-				.flatMap(turno -> mascotaService.buscarPorId(request.mascotaId())
-						.map(mascota -> {
-							turno.setFechaHora(request.fechaHora());
-							turno.setMotivo(request.motivo());
-							turno.setEstado(request.estado());
-							turno.setMascota(mascota);
-							turno.setObservacion(request.observacion());
-							return ResponseEntity.ok(turnoService.guardar(turno));
-						}))
-				.orElse(ResponseEntity.notFound().build());
+		Optional<Turno> turnoBuscado = turnoService.buscarPorId(id);
+		Optional<Mascota> mascotaBuscada = mascotaService.buscarPorId(request.mascotaId());
+
+		if (turnoBuscado.isEmpty() || mascotaBuscada.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+
+		Turno turno = turnoBuscado.get();
+		Mascota mascota = mascotaBuscada.get();
+		turno.setFechaHora(request.fechaHora());
+		turno.setMotivo(request.motivo());
+		turno.setEstado(request.estado());
+		turno.setMascota(mascota);
+		turno.setObservacion(request.observacion());
+
+		return ResponseEntity.ok(turnoService.guardar(turno));
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/turnos/{id}")
 	public ResponseEntity<Void> eliminar(@PathVariable Long id) {
 		if (turnoService.buscarPorId(id).isEmpty()) {
 			return ResponseEntity.notFound().build();
@@ -95,8 +151,18 @@ public class TurnoController {
 	}
 
 	/**
-	 * DTO simple para recibir datos de turno desde el frontend.
+	 * DTO (Data Transfer Object - objeto para transportar datos) simple para recibir datos de turno desde el frontend.
+	 *
+	 * Se usa porque el frontend manda el id de la mascota, pero la entidad Turno necesita una Mascota real.
+	 * 
+	 * Aunque las llaves estén vacías, Java genera automáticamente por ser un record:
+
+		fechaHora()
+		motivo()
+		estado()
+		mascotaId()
+		observacion()
 	 */
-	public record TurnoRequest(LocalDateTime fechaHora, MotivoConsulta motivo, EstadoTurno estado, Long mascotaId, String observacion) {
+	public record TurnoRequest(LocalDateTime fechaHora, String motivo, String estado, Long mascotaId, String observacion) {
 	}
 }

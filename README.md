@@ -44,33 +44,50 @@ strategy   -> contiene reglas intercambiables de calculo de costos
 config     -> carga datos iniciales de prueba
 ```
 
+La aplicacion es monolitica: todo el backend vive en un solo proyecto Spring
+Boot. Para este parcial es una decision intencional porque el alcance es un CRUD
+academico y permite explicar con claridad el flujo entre controlador, servicio,
+repositorio y base de datos.
+
 ## POO y patrones aplicados
 
 - Clases y objetos: entidades `Duenio`, `Mascota` y `Turno`.
 - Herencia: `Duenio` hereda de `Persona`; `Mascota` hereda de `PacienteVeterinario`.
-- Clases abstractas: `BaseEntity`, `Persona`, `PacienteVeterinario` y `AbstractCrudService`.
+- Clases abstractas: `Persona` y `PacienteVeterinario`.
 - Interfaces: `CostoConsultaStrategy`.
-- Polimorfismo: `TurnoService` usa la interfaz `CostoConsultaStrategy`, sin depender de una implementacion concreta.
-- Strategy: permite cambiar la forma de calcular costos de turnos.
-- Template Method: `AbstractCrudService` define el flujo comun de CRUD y deja ganchos para validaciones especificas.
+- Polimorfismo: `TurnoService` usa varias implementaciones de `CostoConsultaStrategy`, sin depender de una clase concreta.
+- Strategy: cada motivo de consulta tiene su propia clase de calculo de costo.
+
+No se usan `enum` en el modelo. Los valores como especie, motivo y estado se
+guardan como texto simple para mantener el proyecto facil de leer. La variacion
+de comportamiento se resuelve con Strategy, por ejemplo en el calculo del costo
+de un turno.
+
+## Consultas JPA incluidas
+
+El proyecto incluye ejemplos simples de consultas vistas en clase:
+
+- Metodo derivado: `findByNombreContainingIgnoreCase`.
+- Consulta JPQL con `@Query`.
+- Consulta SQL nativa con `nativeQuery = true`.
 
 ## API principal
 
 ```text
-GET    /duenios
-POST   /duenios
-PUT    /duenios/{id}
-DELETE /duenios/{id}
+GET    /api/duenios
+POST   /api/duenios
+PUT    /api/duenios/{id}
+DELETE /api/duenios/{id}
 
-GET    /mascotas
-POST   /mascotas
-PUT    /mascotas/{id}
-DELETE /mascotas/{id}
+GET    /api/mascotas
+POST   /api/mascotas
+PUT    /api/mascotas/{id}
+DELETE /api/mascotas/{id}
 
-GET    /turnos
-POST   /turnos
-PUT    /turnos/{id}
-DELETE /turnos/{id}
+GET    /api/turnos
+POST   /api/turnos
+PUT    /api/turnos/{id}
+DELETE /api/turnos/{id}
 ```
 
 ## Base de datos

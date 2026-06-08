@@ -2,6 +2,9 @@ package ar.edu.unpaz.veterinaria.model;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
 /**
@@ -12,7 +15,11 @@ import jakarta.persistence.MappedSuperclass;
  * permite explicar herencia y clases abstractas.
  */
 @MappedSuperclass
-public abstract class PacienteVeterinario extends BaseEntity {
+public abstract class PacienteVeterinario {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	private String nombre;
 	private LocalDate fechaNacimiento;
@@ -23,6 +30,10 @@ public abstract class PacienteVeterinario extends BaseEntity {
 	protected PacienteVeterinario(String nombre, LocalDate fechaNacimiento) {
 		this.nombre = nombre;
 		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public String getNombre() {

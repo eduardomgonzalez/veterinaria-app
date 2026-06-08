@@ -1,7 +1,9 @@
 package ar.edu.unpaz.veterinaria.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +25,7 @@ import ar.edu.unpaz.veterinaria.service.DuenioService;
  * respuestas JSON para que el frontend pueda consumirlas.
  */
 @RestController
-@RequestMapping("/duenios")
+@RequestMapping("/api")
 public class DuenioController {
 
 	private final DuenioService duenioService;
@@ -32,7 +34,7 @@ public class DuenioController {
 		this.duenioService = duenioService;
 	}
 
-	@GetMapping
+	@GetMapping("/duenios")
 	public List<Duenio> listar(@RequestParam(required = false) String nombre) {
 		if (nombre != null && !nombre.isBlank()) {
 			return duenioService.buscarPorNombre(nombre);
@@ -40,33 +42,42 @@ public class DuenioController {
 		return duenioService.listar();
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/duenios/{id}")
 	public ResponseEntity<Duenio> buscar(@PathVariable Long id) {
-		return duenioService.buscarPorId(id)
-				.map(ResponseEntity::ok)
-				.orElse(ResponseEntity.notFound().build());
+		Optional<Duenio> duenioBuscado = duenioService.buscarPorId(id);
+
+		if (duenioBuscado.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+
+		return ResponseEntity.ok(duenioBuscado.get());
 	}
 
-	@PostMapping
-	public Duenio crear(@RequestBody Duenio duenio) {
-		return duenioService.guardar(duenio);
+	@PostMapping("/duenios")
+	public ResponseEntity<Duenio> crear(@RequestBody Duenio duenio) {
+		Duenio duenioGuardado = duenioService.guardar(duenio);
+		return ResponseEntity.status(HttpStatus.CREATED).body(duenioGuardado);
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("/duenios/{id}")
 	public ResponseEntity<Duenio> actualizar(@PathVariable Long id, @RequestBody Duenio datos) {
-		return duenioService.buscarPorId(id)
-				.map(duenio -> {
-					duenio.setNombre(datos.getNombre());
-					duenio.setTelefono(datos.getTelefono());
-					duenio.setEmail(datos.getEmail());
-					duenio.setDni(datos.getDni());
-					duenio.setDireccion(datos.getDireccion());
-					return ResponseEntity.ok(duenioService.guardar(duenio));
-				})
-				.orElse(ResponseEntity.notFound().build());
+		Optional<Duenio> duenioBuscado = duenioService.buscarPorId(id);
+
+		if (duenioBuscado.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+
+		Duenio duenio = duenioBuscado.get();
+		duenio.setNombre(datos.getNombre());
+		duenio.setTelefono(datos.getTelefono());
+		duenio.setEmail(datos.getEmail());
+		duenio.setDni(datos.getDni());
+		duenio.setDireccion(datos.getDireccion());
+
+		return ResponseEntity.ok(duenioService.guardar(duenio));
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/duenios/{id}")
 	public ResponseEntity<Void> eliminar(@PathVariable Long id) {
 		if (duenioService.buscarPorId(id).isEmpty()) {
 			return ResponseEntity.notFound().build();

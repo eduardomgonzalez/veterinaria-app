@@ -19,9 +19,10 @@
 	</header>
 
 	<main class="layout">
+		<!-- CRUD de duenios: el formulario envia datos a /api/duenios y la tabla muestra la respuesta del backend. -->
 		<section class="panel">
 			<div class="section-heading">
-				<h2>Duenios</h2>
+				<h2>Dueños</h2>
 				<span id="total-duenios">0</span>
 			</div>
 			<form id="duenio-form" class="form-grid">
@@ -51,6 +52,7 @@
 			</div>
 		</section>
 
+		<!-- CRUD de mascotas: cada mascota se relaciona con un duenio mediante el select que carga app.js. -->
 		<section class="panel">
 			<div class="section-heading">
 				<h2>Mascotas</h2>
@@ -71,7 +73,7 @@
 				</label>
 				<label>Raza<input name="raza"></label>
 				<label>Peso kg<input name="peso" type="number" min="0" step="0.1" value="0"></label>
-				<label>Duenio<select name="duenioId" id="mascota-duenio" required></select></label>
+				<label>Dueño<select name="duenioId" id="mascota-duenio" required></select></label>
 				<div class="actions">
 					<button type="submit">Guardar</button>
 					<button type="button" data-reset="mascota-form">Limpiar</button>
@@ -83,7 +85,7 @@
 						<tr>
 							<th>Nombre</th>
 							<th>Especie</th>
-							<th>Duenio</th>
+							<th>Dueño</th>
 							<th>Acciones</th>
 						</tr>
 					</thead>
@@ -92,6 +94,7 @@
 			</div>
 		</section>
 
+		<!-- CRUD de turnos: el frontend envia mascotaId; el backend busca la Mascota real y calcula el costo. -->
 		<section class="panel wide-panel">
 			<div class="section-heading">
 				<h2>Turnos</h2>
@@ -141,6 +144,7 @@
 		</section>
 	</main>
 
+	<!-- app.js conecta esta vista HTML con los endpoints REST del backend Spring Boot. -->
 	<script src="app.js"></script>
 </body>
 </html>
