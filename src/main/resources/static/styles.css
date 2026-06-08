@@ -178,7 +178,7 @@ button[data-action="delete"] {
 table {
 	width: 100%;
 	border-collapse: collapse;
-	min-width: 620px;
+	table-layout: auto;
 }
 
 th,
@@ -202,6 +202,11 @@ tr:last-child td {
 .row-actions {
 	display: flex;
 	gap: 8px;
+	white-space: nowrap;
+}
+
+.row-actions button {
+	padding: 0 12px;
 }
 
 .tag {
@@ -241,5 +246,9 @@ tr:last-child td {
 	.wide-panel,
 	.wide {
 		grid-column: auto;
+	}
+
+	table {
+		min-width: 620px;
 	}
 }
