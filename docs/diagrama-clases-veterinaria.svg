@@ -1,0 +1,259 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1280" viewBox="0 0 1800 1280">
+  <defs>
+    <style>
+      .title { font: 700 44px Arial, sans-serif; fill: #0b2f6b; }
+      .group-title { font: 700 22px Arial, sans-serif; }
+      .class-title { font: 700 18px Arial, sans-serif; fill: #111; }
+      .class-stereo { font: 14px Arial, sans-serif; fill: #333; }
+      .text { font: 15px Arial, sans-serif; fill: #111; }
+      .small { font: 13px Arial, sans-serif; fill: #111; }
+      .note { font: 14px Arial, sans-serif; fill: #111; }
+      .box { fill: #ffffff; stroke: #222; stroke-width: 2; }
+      .head-blue { fill: #d9eaff; stroke: #222; stroke-width: 2; }
+      .head-green { fill: #def2dc; stroke: #222; stroke-width: 2; }
+      .head-purple { fill: #eadcf5; stroke: #222; stroke-width: 2; }
+      .head-gray { fill: #eeeeee; stroke: #222; stroke-width: 2; }
+      .blue-dash { fill: none; stroke: #1680ff; stroke-width: 2.5; stroke-dasharray: 9 7; }
+      .green-dash { fill: none; stroke: #239a32; stroke-width: 2.5; stroke-dasharray: 9 7; }
+      .purple-dash { fill: none; stroke: #8d5bb7; stroke-width: 2.5; stroke-dasharray: 9 7; }
+      .line { stroke: #111; stroke-width: 2; fill: none; }
+      .dash-line { stroke: #111; stroke-width: 2; fill: none; stroke-dasharray: 7 6; }
+      .section-line { stroke: #222; stroke-width: 1.5; }
+      .legend-box { fill: #fff; stroke: #222; stroke-width: 2; }
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto">
+      <path d="M1,1 L11,6 L1,11" fill="none" stroke="#111" stroke-width="2"/>
+    </marker>
+    <marker id="triangle" markerWidth="14" markerHeight="14" refX="13" refY="7" orient="auto">
+      <path d="M1,1 L13,7 L1,13 Z" fill="#fff" stroke="#111" stroke-width="2"/>
+    </marker>
+    <marker id="diamond" markerWidth="14" markerHeight="14" refX="13" refY="7" orient="auto">
+      <path d="M1,7 L7,1 L13,7 L7,13 Z" fill="#111" stroke="#111" stroke-width="1.5"/>
+    </marker>
+  </defs>
+
+  <rect width="1800" height="1280" fill="#ffffff"/>
+  <text x="900" y="55" text-anchor="middle" class="title">Diagrama de clases - Veterinaria App: MVC + Strategy</text>
+
+  <!-- Grupo Modelo / POO -->
+  <rect x="25" y="90" width="885" height="590" rx="18" class="blue-dash"/>
+  <text x="55" y="125" class="group-title" fill="#126ee8">Modelo / POO</text>
+
+  <!-- Persona -->
+  <g transform="translate(70,150)">
+    <rect width="300" height="205" class="box"/>
+    <rect width="300" height="58" class="head-gray"/>
+    <text x="150" y="22" text-anchor="middle" class="class-stereo">&lt;&lt;abstract&gt;&gt;</text>
+    <text x="150" y="45" text-anchor="middle" class="class-title">Persona</text>
+    <line x1="0" y1="58" x2="300" y2="58" class="section-line"/>
+    <text x="18" y="83" class="text">- id: Long</text>
+    <text x="18" y="106" class="text">- nombre: String</text>
+    <text x="18" y="129" class="text">- telefono: String</text>
+    <text x="18" y="152" class="text">- email: String</text>
+    <line x1="0" y1="162" x2="300" y2="162" class="section-line"/>
+    <text x="18" y="187" class="text">+ getters/setters()</text>
+  </g>
+
+  <!-- Duenio -->
+  <g transform="translate(525,150)">
+    <rect width="320" height="230" class="box"/>
+    <rect width="320" height="40" class="head-blue"/>
+    <text x="160" y="26" text-anchor="middle" class="class-title">Duenio</text>
+    <line x1="0" y1="40" x2="320" y2="40" class="section-line"/>
+    <text x="18" y="67" class="text">- dni: String</text>
+    <text x="18" y="90" class="text">- direccion: String</text>
+    <text x="18" y="113" class="text">- mascotas: List&lt;Mascota&gt;</text>
+    <line x1="0" y1="128" x2="320" y2="128" class="section-line"/>
+    <text x="18" y="153" class="text">+ getDni(): String</text>
+    <text x="18" y="176" class="text">+ setDni(dni): void</text>
+    <text x="18" y="199" class="text">+ getMascotas(): List&lt;Mascota&gt;</text>
+  </g>
+
+  <!-- PacienteVeterinario -->
+  <g transform="translate(70,430)">
+    <rect width="330" height="190" class="box"/>
+    <rect width="330" height="58" class="head-gray"/>
+    <text x="165" y="22" text-anchor="middle" class="class-stereo">&lt;&lt;abstract&gt;&gt;</text>
+    <text x="165" y="45" text-anchor="middle" class="class-title">PacienteVeterinario</text>
+    <line x1="0" y1="58" x2="330" y2="58" class="section-line"/>
+    <text x="18" y="83" class="text">- id: Long</text>
+    <text x="18" y="106" class="text">- nombre: String</text>
+    <text x="18" y="129" class="text">- fechaNacimiento: LocalDate</text>
+    <line x1="0" y1="142" x2="330" y2="142" class="section-line"/>
+    <text x="18" y="167" class="text">+ getters/setters()</text>
+  </g>
+
+  <!-- Mascota -->
+  <g transform="translate(525,430)">
+    <rect width="320" height="230" class="box"/>
+    <rect width="320" height="40" class="head-blue"/>
+    <text x="160" y="26" text-anchor="middle" class="class-title">Mascota</text>
+    <line x1="0" y1="40" x2="320" y2="40" class="section-line"/>
+    <text x="18" y="67" class="text">- especie: String</text>
+    <text x="18" y="90" class="text">- raza: String</text>
+    <text x="18" y="113" class="text">- peso: double</text>
+    <text x="18" y="136" class="text">- duenio: Duenio</text>
+    <line x1="0" y1="150" x2="320" y2="150" class="section-line"/>
+    <text x="18" y="175" class="text">+ getDuenio(): Duenio</text>
+    <text x="18" y="198" class="text">+ setDuenio(duenio): void</text>
+  </g>
+
+  <!-- Turno -->
+  <g transform="translate(935,430)">
+    <rect width="330" height="260" class="box"/>
+    <rect width="330" height="40" class="head-blue"/>
+    <text x="165" y="26" text-anchor="middle" class="class-title">Turno</text>
+    <line x1="0" y1="40" x2="330" y2="40" class="section-line"/>
+    <text x="18" y="67" class="text">- id: Long</text>
+    <text x="18" y="90" class="text">- fechaHora: LocalDateTime</text>
+    <text x="18" y="113" class="text">- motivo: String</text>
+    <text x="18" y="136" class="text">- estado: String</text>
+    <text x="18" y="159" class="text">- mascota: Mascota</text>
+    <text x="18" y="182" class="text">- costoEstimado: double</text>
+    <line x1="0" y1="196" x2="330" y2="196" class="section-line"/>
+    <text x="18" y="221" class="text">+ confirmar(): void</text>
+    <text x="18" y="244" class="text">+ cancelar(): void</text>
+  </g>
+
+  <!-- Herencia y relaciones modelo -->
+  <line x1="370" y1="252" x2="525" y2="252" class="line" marker-end="url(#triangle)"/>
+  <text x="448" y="238" text-anchor="middle" class="small">hereda</text>
+  <line x1="400" y1="525" x2="525" y2="525" class="line" marker-end="url(#triangle)"/>
+  <text x="462" y="510" text-anchor="middle" class="small">hereda</text>
+  <line x1="685" y1="380" x2="685" y2="430" class="line" marker-start="url(#diamond)"/>
+  <text x="700" y="410" class="small">1 a *</text>
+  <line x1="845" y1="545" x2="935" y2="545" class="line" marker-end="url(#arrow)"/>
+  <text x="890" y="530" text-anchor="middle" class="small">1 a *</text>
+
+  <!-- Grupo Strategy -->
+  <rect x="945" y="90" width="730" height="350" rx="18" class="green-dash"/>
+  <text x="975" y="125" class="group-title" fill="#1d7a26">Strategy - calculo de costo</text>
+
+  <!-- Interface Strategy -->
+  <g transform="translate(1115,145)">
+    <rect width="330" height="125" class="box"/>
+    <rect width="330" height="58" class="head-gray"/>
+    <text x="165" y="22" text-anchor="middle" class="class-stereo">&lt;&lt;interface&gt;&gt;</text>
+    <text x="165" y="45" text-anchor="middle" class="class-title">CostoConsultaStrategy</text>
+    <line x1="0" y1="58" x2="330" y2="58" class="section-line"/>
+    <text x="18" y="84" class="text">+ getMotivo(): String</text>
+    <text x="18" y="108" class="text">+ calcular(turno: Turno): double</text>
+  </g>
+
+  <!-- Strategies concretas -->
+  <g transform="translate(985,282)">
+    <rect width="260" height="68" class="box"/>
+    <rect width="260" height="28" class="head-green"/>
+    <text x="130" y="21" text-anchor="middle" class="class-title">CostoControlStrategy</text>
+    <text x="16" y="48" class="small">+ getMotivo(): CONTROL</text>
+    <text x="16" y="64" class="small">+ calcular(): 5000</text>
+  </g>
+  <g transform="translate(1315,282)">
+    <rect width="285" height="68" class="box"/>
+    <rect width="285" height="28" class="head-green"/>
+    <text x="142" y="21" text-anchor="middle" class="class-title">CostoVacunacionStrategy</text>
+    <text x="16" y="48" class="small">+ getMotivo(): VACUNACION</text>
+    <text x="16" y="64" class="small">+ calcular(): 8000</text>
+  </g>
+  <g transform="translate(985,360)">
+    <rect width="260" height="68" class="box"/>
+    <rect width="260" height="28" class="head-green"/>
+    <text x="130" y="21" text-anchor="middle" class="class-title">CostoUrgenciaStrategy</text>
+    <text x="16" y="48" class="small">+ getMotivo(): URGENCIA</text>
+    <text x="16" y="64" class="small">+ calcular(): 12000</text>
+  </g>
+  <g transform="translate(1315,360)">
+    <rect width="285" height="68" class="box"/>
+    <rect width="285" height="28" class="head-green"/>
+    <text x="142" y="21" text-anchor="middle" class="class-title">CostoPeluqueriaStrategy</text>
+    <text x="16" y="48" class="small">+ getMotivo(): PELUQUERIA</text>
+    <text x="16" y="64" class="small">+ calcular(): 7000</text>
+  </g>
+
+  <line x1="1115" y1="282" x2="1195" y2="270" class="dash-line" marker-end="url(#triangle)"/>
+  <line x1="1450" y1="282" x2="1365" y2="270" class="dash-line" marker-end="url(#triangle)"/>
+  <line x1="1115" y1="360" x2="1235" y2="270" class="dash-line" marker-end="url(#triangle)"/>
+  <line x1="1450" y1="360" x2="1325" y2="270" class="dash-line" marker-end="url(#triangle)"/>
+
+  <!-- Grupo MVC / Persistencia -->
+  <rect x="355" y="740" width="1120" height="300" rx="18" class="purple-dash"/>
+  <text x="385" y="775" class="group-title" fill="#7947a6">Capas MVC + JPA/Hibernate</text>
+
+  <g transform="translate(400,805)">
+    <rect width="280" height="145" class="box"/>
+    <rect width="280" height="36" class="head-purple"/>
+    <text x="140" y="24" text-anchor="middle" class="class-title">Controllers</text>
+    <text x="18" y="62" class="text">DuenioController</text>
+    <text x="18" y="86" class="text">MascotaController</text>
+    <text x="18" y="110" class="text">TurnoController</text>
+    <text x="18" y="134" class="small">Reciben HTTP /api/...</text>
+  </g>
+
+  <g transform="translate(770,805)">
+    <rect width="280" height="145" class="box"/>
+    <rect width="280" height="36" class="head-purple"/>
+    <text x="140" y="24" text-anchor="middle" class="class-title">Services</text>
+    <text x="18" y="62" class="text">DuenioService</text>
+    <text x="18" y="86" class="text">MascotaService</text>
+    <text x="18" y="110" class="text">TurnoService</text>
+    <text x="18" y="134" class="small">Logica de negocio</text>
+  </g>
+
+  <g transform="translate(1140,805)">
+    <rect width="295" height="145" class="box"/>
+    <rect width="295" height="36" class="head-purple"/>
+    <text x="148" y="24" text-anchor="middle" class="class-title">Repositories</text>
+    <text x="18" y="62" class="text">DuenioRepository</text>
+    <text x="18" y="86" class="text">MascotaRepository</text>
+    <text x="18" y="110" class="text">TurnoRepository</text>
+    <text x="18" y="134" class="small">Extienden JpaRepository</text>
+  </g>
+
+  <line x1="680" y1="878" x2="770" y2="878" class="dash-line" marker-end="url(#arrow)"/>
+  <text x="725" y="860" text-anchor="middle" class="small">delega</text>
+  <line x1="1050" y1="878" x2="1140" y2="878" class="dash-line" marker-end="url(#arrow)"/>
+  <text x="1095" y="860" text-anchor="middle" class="small">usa</text>
+  <line x1="1225" y1="805" x2="1130" y2="690" class="dash-line" marker-end="url(#arrow)"/>
+  <text x="1185" y="735" class="small">persiste</text>
+  <polyline points="910,805 1688,805 1688,205 1445,205" class="dash-line" marker-end="url(#arrow)"/>
+  <text x="1490" y="790" class="small">TurnoService usa Strategy</text>
+
+  <!-- App -->
+  <g transform="translate(760,1100)">
+    <rect width="320" height="95" class="box"/>
+    <rect width="320" height="36" class="head-purple"/>
+    <text x="160" y="24" text-anchor="middle" class="class-title">VeterinariaAppApplication</text>
+    <text x="18" y="64" class="text">+ main(args: String[]): void</text>
+  </g>
+  <line x1="920" y1="1100" x2="920" y2="950" class="dash-line" marker-end="url(#arrow)"/>
+  <text x="935" y="1030" class="small">arranca Spring Boot</text>
+
+  <!-- Nota -->
+  <g transform="translate(1460,585)">
+    <path d="M0,0 H225 V120 H0 Z" fill="#fff7c7" stroke="#8a7a19" stroke-width="1.6" stroke-dasharray="4 3"/>
+    <text x="18" y="28" class="note">Strategy permite</text>
+    <text x="18" y="50" class="note">agregar un nuevo</text>
+    <text x="18" y="72" class="note">motivo sin modificar</text>
+    <text x="18" y="94" class="note">TurnoService.</text>
+  </g>
+
+  <!-- Leyenda -->
+  <g transform="translate(50,765)">
+    <rect width="275" height="260" rx="18" class="legend-box"/>
+    <text x="137" y="35" text-anchor="middle" class="class-title" fill="#0b2f6b">Leyenda</text>
+    <line x1="35" y1="70" x2="100" y2="70" class="dash-line" marker-end="url(#triangle)"/>
+    <text x="120" y="75" class="small">Realizacion (implementa)</text>
+    <line x1="35" y1="110" x2="100" y2="110" class="line" marker-end="url(#triangle)"/>
+    <text x="120" y="115" class="small">Generalizacion (herencia)</text>
+    <line x1="35" y1="150" x2="100" y2="150" class="line"/>
+    <text x="120" y="155" class="small">Asociacion</text>
+    <line x1="35" y1="190" x2="100" y2="190" class="line" marker-end="url(#diamond)"/>
+    <text x="120" y="195" class="small">Composicion/agregacion</text>
+    <line x1="35" y1="230" x2="100" y2="230" class="dash-line" marker-end="url(#arrow)"/>
+    <text x="120" y="235" class="small">Dependencia/uso</text>
+  </g>
+
+  <text x="900" y="1240" text-anchor="middle" class="small">
+    Sistema de gestion de clinica veterinaria - Java, Spring Boot, MVC, JPA/Hibernate, H2, CRUD y Strategy
+  </text>
+</svg>

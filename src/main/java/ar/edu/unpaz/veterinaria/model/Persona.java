@@ -10,6 +10,12 @@ import jakarta.persistence.MappedSuperclass;
  *
  * Se utiliza como ejemplo de herencia en POO: el duenio de una mascota es una
  * persona y reutiliza estos atributos.
+ * 
+ * MappedSuperclass dice que esta clase no va a tener una tabla propia, 
+ * pero sus atributos se heredan y se mapean en la tabla de las clases hijas.
+ * 
+ * Es abstracta porque no quiero crear objetos Persona directamente.
+ * Quiero crear objetos concretos como Duenio.
  */
 @MappedSuperclass
 public abstract class Persona {

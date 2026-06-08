@@ -13,6 +13,12 @@ import jakarta.persistence.MappedSuperclass;
  * En esta primera version solo existe la entidad concreta {@link Mascota}, pero
  * la abstraccion deja claro que el sistema trabaja con pacientes veterinarios y
  * permite explicar herencia y clases abstractas.
+ * 
+ * MappedSuperclass dice que esta clase no va a tener una tabla propia, 
+ * pero sus atributos se heredan y se mapean en la tabla de las clases hijas.
+ * 
+ * Es abstracta porque no quiero crear objetos PacienteVeterinario directamente.
+ * Quiero crear objetos concretos como Mascota.
  */
 @MappedSuperclass
 public abstract class PacienteVeterinario {
