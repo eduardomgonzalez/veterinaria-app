@@ -301,8 +301,13 @@ document.body.addEventListener("click", async event => {
 
 	if (action === "delete") {
 		const endpoint = endpoints[`${type}s`];
-		await fetchJson(`${endpoint}/${id}`, { method: "DELETE" });
-		await cargarDatos();
+		try {
+			await fetchJson(`${endpoint}/${id}`, { method: "DELETE" });
+			await cargarDatos();
+		} catch (error) {
+			console.error(error);
+			alert("No se pudo eliminar. Primero elimina los datos asociados.");
+		}
 	}
 });
 
