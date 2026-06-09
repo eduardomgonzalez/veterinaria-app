@@ -40,8 +40,8 @@ public class DatosIniciales implements CommandLineRunner {
 			return;
 		}
 
-		Duenio ana = duenioService.guardar(new Duenio("Ana Perez", "1122334455", "ana@mail.com", "30111222", "San Miguel"));
-		Duenio carlos = duenioService.guardar(new Duenio("Carlos Gomez", "1166778899", "carlos@mail.com", "28999888", "Jose C. Paz"));
+		Duenio ana = duenioService.guardar(new Duenio("Lionel Messi", "1122334455", "lmessi@mail.com", "30111222", "San Miguel"));
+		Duenio carlos = duenioService.guardar(new Duenio("Julian Alvarez", "1166778899", "jalvarez@mail.com", "28999888", "Jose C. Paz"));
 
 		Mascota lola = mascotaService.guardar(new Mascota("Lola", LocalDate.of(2021, 5, 10), "PERRO", "Caniche", 6.5, ana));
 		Mascota michi = mascotaService.guardar(new Mascota("Michi", LocalDate.of(2020, 3, 3), "GATO", "Europeo comun", 4.1, carlos));
